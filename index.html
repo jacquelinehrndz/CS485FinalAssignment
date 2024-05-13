@@ -13,7 +13,8 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/addons/p5.sound.min.js"></script> 
         <script src = "boid.js"></script>
         <script src = "penguin.js"></script>
-        <script src = "sketch.js"></script>
+        <!--<script src = "sketch.js"></script> -->
+        <script src = "boidssnowball.js"></script>
 
         <style>
             @font-face {
@@ -39,97 +40,174 @@
 
         <canvas id='mycanvas'></canvas>
 
-<!--
         <script>
             const canvas = document.querySelector("canvas");
-            const offscreen = new OffscreenCanvas(256, 256);
             const sprites_to_draw = new Array(2); 
             var draw_loop_timeout;
             var img = new Image();
-            var color_map = new Image();
+            var snowball_Img = new Image();
+        
+            const up_arrow = 38;
+            const down_arrow = 40;
+            const left_arrow = 37;
+            const right_arrow = 39;
+        
+            //const penguin_states = ["idle","idleBackAndForth","idleBreathing","idleFall","idleLayDown","idleLookAround","idleLookDown","idleLookLeft",
+            //"idleLookRight","idleLookUp","idleSit","idleSpin","idleWave","walk_E","walk_N","walk_NE","walk_NW","walk_S","walk_SE","walk_SW","walk_W"];
+            const penguin_states = ["idle","walk_E","walk_W"];
+            const snowball_states = ["idle"];
+        
+            var key_change = false;
+            var key_num = [];
+        
+            var key_press = { 'UP' : null,
+                            'RIGHT' : null,
+                            'LEFT' : null,
+                            'DOWN' : null
+                                        }
             
-            sprites_to_draw[0] = new Array(0); //background and 
-            sprites_to_draw[1] = new Array(0); //forground
+            sprites_to_draw[0] = new Array(0); //background
+            sprites_to_draw[1] = new Array(0); //forground, BOIDSSS
         
-            $.getJSON( "Sonic/animationData.json", function( data ) {
-                //sprites_to_draw[1].push( new Sprite(data, 0 ,0, "idleSpin") );
-                //sprites_to_draw[1].push( new Sprite(data, 100 ,100, "idleWave") );
-                sprites_to_draw[1].push( new Sprite(data, 150 ,650, "idle") );
         
+            $.getJSON( "penguin_Imgs/animationData.json", function( data ) {
+                    //Preload Penguin
+                        for(var i = 0;i< penguin_states.length;i++){
+                            for(var j = 0; j < data["penguin"][penguin_states[i]].length; j++){
+                                console.log("loading");
+                                data["penguin"][penguin_states[i]][j]['img'] = new Image();
+                                data["penguin"][penguin_states[i]][j]['img'].src = 'penguin_Imgs/' + penguin_states[i] + '/' + j + '.png';
+                            }
+                        }
+                sprites_to_draw[1].push( new Sprite(data, 150 ,600, "idle") );
             });
         
-            $.getJSON( "acid_bk/animationData.json", function( data ) {
-                sprites_to_draw[0].push( new BackgroundSprite(data) );
-            });
+            $.getJSON( "snowball_imgs/animationData.json", function( data ) {
+            //Preload snowball
+                for(var i = 0;i< snowball_states.length;i++){
+                            for(var j = 0; j < data["snowball"][snowball_states[i]].length; j++){
+                                //console.log("loading snowball");
+                                data["snowball"][snowball_states[i]][j]['img'] = new Image();
+                                data["snowball"][snowball_states[i]][j]['img'].src = 'snowball_imgs/' + snowball_states[i] + '/' + j + '.png';
+                            }
+                }
         
+                for(var i = 0; i < 100;i++){
+                    sprites_to_draw[1].push( new Boid2(data, "idle") );
+                }
+        
+        
+            });
         
             $( document ).ready(function() {
+                
                 console.log( "Page is now ready" );
                 resize();
         
-                /*(
                 img.onload = function() {
                     var ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                 };
-                img.src = 'imgs/bk_lord.jpg';
-                */
-              
-                color_map.onload = function() {
-                    var ctx = offscreen.getContext('2d');
-                    ctx.drawImage(color_map, 0, 0, canvas.width, canvas.height);
-                };
-                color_map.src = 'imgs/bk_lord.png';
-             
-                draw_loop_timeout = setInterval(draw_loop, 33);
+                img.src = 'imgs/bk_2.jpg';
+        
+                snowball_Img.src = 'snowball.png';
+                //draw_loop_timeout = setInterval(draw_loop, 33);
+        
+                setTimeout(() => {
+                    requestAnimationFrame(draw_loop);
+                }, "2000");
             });
         
-            //window.addEventListener('resize', resize);
-        
-            let start, previousTimeStamp;
+            window.addEventListener('resize', resize);
         
             function draw_loop(){
-        
-                if (start === undefined) {
-                    start = Date.now();
-                }else if ( (Date.now() - start) < 100){
-                    requestAnimationFrame(draw_loop);
-                    return;
-                };
-                start = Date.now();
                 
                 var background_length = sprites_to_draw[0].length;
                 var forground_length  = sprites_to_draw[1].length;
                 var has_background_changed = false;
-        
+                
                 const context = canvas.getContext('2d');
-                //context.clearRect(0, 0, canvas.width, canvas.height);
         
                 //Draw background sprites
                 for(var i = 0; i < background_length; i++){
                     has_background_changed = sprites_to_draw[0][i].draw();
                 }
+                
+                document.body.onkeydown = function(e){
+                    
+                    if(e.keyCode == up_arrow){
+                        key_change = true;
+                        key_press["UP"] = e.keyCode;
+                    } 
+                    if(e.keyCode == right_arrow){
+                        key_change = true;
+                        key_press["RIGHT"] = e.keyCode;
+                    }
+                    if(e.keyCode == left_arrow){
+                        key_change = true;
+                        key_press["LEFT"] = e.keyCode;
+                    }
+                    if(e.keyCode == down_arrow){
+                        key_change = true;
+                        key_press["DOWN"] = e.keyCode;
+                    }
+                
+                };
+                document.body.onkeyup = function(e){
+                    
+                    if(key_press["UP"] == e.keyCode){
+                        key_press["UP"] = null;
+                    }
+                    if(key_press["RIGHT"] == e.keyCode){
+                        key_press["RIGHT"] = null;
+                    }
+                    if(key_press["LEFT"] == e.keyCode){
+                        key_press["LEFT"] = null;
+                    }
+                    if(key_press["DOWN"] == e.keyCode){
+                        key_press["DOWN"] = null;
+                    }
         
+                    if(key_press["UP"] == null && key_press["RIGHT"] == null && key_press["LEFT"] == null && key_press["DOWN"] == null){
+                        key_change = false;
+                    }
+                    
+                };
+                var ctx = canvas.getContext('2d');
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                
                 //Draw forground sprites
-                for(var i = 0; i < forground_length; i++){
-                    sprites_to_draw[1][i].draw( { 'has_background_changed' : has_background_changed,
-                                                  'key_change' : false
+                for(var sprites of sprites_to_draw[1]){
+                    
+        
+                    if (typeof sprites.flock === "function") { 
+                        sprites.edges(canvas.width,canvas.height);
+                        sprites.draw({ 'has_background_changed' : has_background_changed,
+                                                  'key_change' : key_change,
+                                                  'key_press' : key_press,
+                                                  'foreground_sprites' : sprites_to_draw[1]
+                                                });
+                        sprites.flock(sprites_to_draw[1]);
+                        
+                    } else {
+                        sprites.draw( { 'has_background_changed' : has_background_changed,
+                                                  'key_change' : key_change,
+                                                  'key_press' : key_press,
+                                                  'foreground_sprites' : sprites_to_draw[1]
                                                 }
                     );
+                    }
                 }
+                
                 requestAnimationFrame(draw_loop);
             }
         
             function resize(){
                 canvas.width = window.innerWidth;
                 canvas.height = window.innerHeight;
-        
-                offscreen.width = window.innerWidth;
-                offscreen.height = window.innerHeight;
-        
             }
         </script>
-        -->
-    </body>    
-
+        
+    </body>
 </html>
