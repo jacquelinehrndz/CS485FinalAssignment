@@ -35,9 +35,7 @@ class Sprite
         for (let boid of this.flock) {
             boid.flock(this.flock);
             boid.update();
-            //boid.limitSpeed(); // Limit speed
             boid.checkEdges(); // Check for boundary collisions
-
             boid.show();
 
             this.x = boid.position.x; 
