@@ -17,7 +17,7 @@ function windowResize()
 function preload()
 {
     //loading json file
-    //sprites = loadJSON("sprite/Penguins/animationData.json");
+    sprites = loadJSON("sprite/Penguins/animationData.json");
     //loading bk
     bk = loadImage("imgs/0.png")
 }

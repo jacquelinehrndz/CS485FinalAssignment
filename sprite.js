@@ -6,11 +6,11 @@ class Sprite
     constructor(data, numberofBoids) {
         this.data = data;
         // boid array
-        this.boids = [];
+        this.flock = [];
 
         //push new instances of boids into the array
         for (let i = 0; i < numberofBoids; i++) {
-            this.boids.push(new Boid());
+            this.flock.push(new Boid());
         }
         this.x = width / 2;
         this.y = height / 2;
@@ -32,8 +32,8 @@ class Sprite
     }
 
     updatePosition() {
-        for (let boid of this.boids) {
-            boid.flock(this.boids);
+        for (let boid of this.flock) {
+            boid.flock(this.flock);
             boid.update();
             //boid.limitSpeed(); // Limit speed
             boid.checkEdges(); // Check for boundary collisions
