@@ -10,17 +10,34 @@
         <!--BOID SCRIPT-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/p5.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/addons/p5.dom.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/addons/p5.sound.min.js"></script>
-
-        <script src = "sketch.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/addons/p5.sound.min.js"></script> 
         <script src = "boid.js"></script>
+        <script src = "penguin.js"></script>
 
+        <style>
+            @font-face {
+                font-family: 'cute';
+                src: url(fonts/cutefont.ttf);
+                font-weight: normal;
+                font-style: normal;
+            }
+            h1
+            {
+                font-family: cute;
+                font-size: 100px;
+                text-align: center;
+                color: lightblue;
+                opacity: 75%;
+            }
+        </style>
 
     </head>
 
     <body>
+        <h1>penguin boids</h1>
 
         <canvas id='mycanvas'></canvas>
+        <script src = "sketch.js"></script>
 <!--
         <script>
             const canvas = document.querySelector("canvas");

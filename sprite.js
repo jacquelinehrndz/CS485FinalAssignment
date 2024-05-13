@@ -25,12 +25,11 @@ class Sprite
             let frames = this.data.TenderBud[animation].length;
             this.loadedImgs[animation] = [];
             for (let i = 0; i < frames; i++) {
-                let animationPath = 'sprite/Penguins/TenderBud/${animation}/${i}.png';
+                let animationPath = `sprite/Penquins/TenderBud/${animation}/${i}.png`;
                 this.loadedImgs[animation].push(loadImage(animationPath));
             }
         }
     }
-
 
     updatePosition() {
         for (let boid of this.boids) {
@@ -44,8 +43,6 @@ class Sprite
             this.x = boid.position.x; 
             this.y = boid.position.y; 
         }
-
-
     }
 
     display() {
@@ -56,7 +53,6 @@ class Sprite
         // Draw the current frame
         image(frames[this.currentFrame], this.x, this.y);
     }
-
 
     changeAnimation(animation) {
         this.currentAnimation = animation;

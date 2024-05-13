@@ -14,12 +14,11 @@ class Boid
 
         //sprites
         //make sprites follow boids
-        //this.sprite = new Sprite(penguins, 0);
+        //this.sprite = new Sprite(sprites, 0);
         //this.sprite.preloadAnimations();
     }
 
-
-    //make boids reappear
+    //make boids reappear if they reach edges
     edges()
     {
         if(this.position.x > width)
