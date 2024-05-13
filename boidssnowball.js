@@ -136,6 +136,8 @@ class BoidSnowball{
         this.cur_frame = 0;
     }
 
+    //from vid
+    //calling all functions to create boids
     flock(boids){
         this.align(boids);
         this.cohesion(boids);

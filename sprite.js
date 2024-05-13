@@ -72,7 +72,9 @@ class Sprite
         if(state['key_change'] == true){
             this.move(state['key_press']);
             this.update_animation();
-        } else { //If no key input, then we shouldn't be moving
+        }
+        else
+        { //If no key input no movement
             this.x_v = 0;
             this.y_v = 0;
         }
@@ -101,7 +103,7 @@ class Sprite
                 }
             }
             
-            //If we're not idle, then we should be moving!
+            //move whule not idle
             this.x = this.x + this.x_v;
             this.y = this.y + this.y_v;
                 
