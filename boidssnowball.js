@@ -19,11 +19,11 @@ class BoidSnowball{
 		this.perception = 50;
 		
 		// Alignment
-		this.alignment_Scalar = 1.0;
+		this.alignment_scale = 1.0;
 		// Cohesion
-		this.cohesion_Scalar = 1.0;
+		this.cohesion_scale = 1.0;
 		// Separation
-		this.separation_Scalar = 1.0;
+		this.separation_scale = 1.0;
 		
 		// Random position
         this.x = this.random_pos_x();
@@ -103,7 +103,7 @@ class BoidSnowball{
 		this.x_v += this.acceleration_X;
 		this.y_v += this.acceleration_Y;
 
-		// Clamp the velocity to maxSpeed
+		//vel to max speed
 		let speed = Math.sqrt(this.x_v * this.x_v + this.y_v * this.y_v);
 		if (speed > this.maxSpeed) {
 			this.x_v = (this.x_v / speed) * this.maxSpeed;
@@ -132,7 +132,6 @@ class BoidSnowball{
         const idle_state = ["idle"];
 
         const random = Math.floor(Math.random() * idle_state.length);
-        // console.log(idle_state[random]);
         this.state = idle_state[random];
         this.cur_frame = 0;
     }
@@ -155,6 +154,7 @@ class BoidSnowball{
 			let b = this.y - other.y;
 			let d = Math.sqrt(a*a + b*b);
 
+            //from vid
 			if(other !== this && d < perceptionRadius){
 				steering_x += other.x_v;
 				steering_y += other.y_v;
@@ -166,8 +166,8 @@ class BoidSnowball{
 			steering_y /= total;
 
 			// Adjust steering to average direction and subtract current velocity
-			steering_x -= this.x_v;
-			steering_y -= this.y_v;
+			steering_x = steering_x - this.x_v;
+			steering_y = steering_y - this.y_v;
 
 			// Normalize and apply maxforce
 			let mag = Math.sqrt(steering_x * steering_x + steering_y * steering_y);
@@ -175,16 +175,16 @@ class BoidSnowball{
 				// normalize 			
 				steering_x /= mag;
 				steering_y /= mag;
-				steering_x *= this.maxforce;
-				steering_y *= this.maxforce;
+				steering_x = steering_x * this.maxforce;
+				steering_y = steering_y * this.maxforce;
 			}
 			
-			steering_x *= this.alignment_Scalar;
-			steering_y *= this.alignment_Scalar;
+			steering_x = steering_x * this.alignment_scale;
+			steering_y = steering_y * this.alignment_scale;
 			
-			// Add steering force to acceleration
-			this.acceleration_X += steering_x;
-			this.acceleration_Y += steering_y;
+			// Add to acceleration
+			this.acceleration_X = this.acceleration_X + steering_x;
+			this.acceleration_Y = this.acceleration_Y + steering_y;
 		}
 	}
 
@@ -217,16 +217,16 @@ class BoidSnowball{
 				// normalize 			
 				steering_x /= mag;
 				steering_y /= mag;
-				steering_x *= this.maxforce;
-				steering_y *= this.maxforce;
+				steering_x = steering_x * this.maxforce;
+				steering_y = steering_y * this.maxforce;
 			}
 
-			steering_x *= this.cohesion_Scalar;
-			steering_y *= this.cohesion_Scalar;
+			steering_x = steering_x * this.cohesion_scale;
+			steering_y = steering_y * this.cohesion_scale;
 
 			// Add steering force to acceleration
-			this.acceleration_X += steering_x;
-			this.acceleration_Y += steering_y;
+			this.acceleration_X = this.acceleration_X + steering_x;
+			this.acceleration_Y = this.acceleration_Y + steering_y;
 		}
 	}
 
@@ -241,13 +241,14 @@ class BoidSnowball{
 			let b = this.y - other.y;
 			let d = Math.sqrt(a * a + b * b);
 
-			if(other !== this && d < perceptionRadius && d > 0){ // Ensuring d is positive to avoid division by zero
+            //from vid
+			if(other !== this && d < perceptionRadius && d > 0){
 				let diff_x = this.x - other.x;
 				let diff_y = this.y - other.y;
 				diff_x /= d; // Normalize the difference
 				diff_y /= d;
-				steering_x += diff_x;
-				steering_y += diff_y;
+				steering_x = steering_x + diff_x;
+				steering_y = steering_y + diff_y;
 				total++;
 			}
 		}
@@ -255,22 +256,23 @@ class BoidSnowball{
 			steering_x /= total;
 			steering_y /= total;
 
-			// Normalize and apply maxforce
+			// Normalize
+            //adding maxforce
 			let mag = Math.sqrt(steering_x * steering_x + steering_y * steering_y);
 			if (mag > this.maxforce) {
 				// normalize 			
 				steering_x /= mag;
 				steering_y /= mag;
-				steering_x *= this.maxforce;
-				steering_y *= this.maxforce;
+				steering_x = steering_x * this.maxforce;
+				steering_y = steering_x * this.maxforce;
 			}
 			
-			steering_x *= this.separation_Scalar;
-			steering_y *= this.separation_Scalar;
+			steering_x = steering_x * this.separation_scale;
+			steering_y = steering_x * this.separation_scale;
 			
 			// Add steering force to acceleration
-			this.acceleration_X += steering_x;
-			this.acceleration_Y += steering_y;
+			this.acceleration_X = this.acceleration_X + steering_x;
+			this.acceleration_Y = this.acceleration_X + steering_y;
 		}
 	}
 
@@ -279,26 +281,24 @@ class BoidSnowball{
         this.set_idle_state();
     } 
 
+    //creating random values for boids
+    //for velocity
 	random_velo(){
 		return (Math.random() * 2 * this.maxSpeed) - this.maxSpeed;
 	}
-
+    //x position
     random_pos_x(){
-        // var rand = Math.floor(Math.random() * (window.innerWidth - this.sprite_json[this.root_e][this.state][this.cur_frame]['w']));
         var rand = Math.floor(Math.random() * (window.innerWidth));
-
         return rand;
     }
-
+    //y position
     random_pos_y(){
-        // var rand = Math.floor(Math.random() * (window.innerHeight - this.sprite_json[this.root_e][this.state][this.cur_frame]['w']));
         var rand = Math.floor(Math.random() * (window.innerHeight));
-
         return rand;
     }
 
     update_animation(){
-        //Check if our new animation will put us out of bounds, and if so set current frame to 0
+        //Check if out of bounds
         if(this.cur_frame >= this.sprite_json[this.root_e][this.state].length){
             this.cur_frame = 0;
         }

@@ -191,7 +191,7 @@ class Sprite
             this.state = "walk_W";
         }
 
-        //Check if our new animation will put us out of bounds, and if so set current frame to 0
+        //if out of bounds curr fram to 0
         if(this.cur_frame >= this.sprite_json[this.root_e][this.state].length){
             this.cur_frame = 0;
         }

@@ -26,8 +26,8 @@ class Boid
 
         //converting code from YT vid to context of proj
         //need to create velocities for x and y axis
-        this.x_v = this.random_velo();
-        this.y_v = this.random_velo();
+        this.x_v = this.random_velocity();
+        this.y_v = this.random_velocity();
 
         //setting accelarations for x and y axis
         this.x_a = 0;
@@ -136,7 +136,6 @@ class Boid
         const idle_state = ["idle"];
 
         const random = Math.floor(Math.random() * idle_state.length);
-        //console.log(idle_state[random]);
         this.state = idle_state[random];
         this.cur_frame = 0;
     }
@@ -298,8 +297,8 @@ class Boid
                 */
                 steering_x /= total;
                 steering_y /= total;
-                steering_x -= this.x
-                steering_y -= this.y
+                steering_x = steering_x - this.x
+                steering_y = steering_y - this.y
     
                 if(steering_x < 0)
                     steering_x = -this.maxSpeed;
@@ -309,20 +308,16 @@ class Boid
                     steering_y = -this.maxSpeed;
                 else if ((steering_y > 0))
                     steering_y = this.maxSpeed;
-    
-                steering_x -= this.x_v
-                steering_y -= this.y_v
-    
-                
-    
-                //limit x magnitude to a max of maxForce
+
+                steering_x = steering_x - this.x_v
+                steering_y = steering_y - this.y_v
+                //limit x mag to force
                 if(steering_x < -this.maxforce){
                     steering_x = -this.maxforce;
                 } else if(steering_x > this.maxforce){
                     steering_x = this.maxforce;
                 }
-    
-                //limit y magnitude to a max of maxForce
+                //limit y mag to force
                 if(steering_y < -this.maxforce){
                     steering_y = -this.maxforce;
                 } else if(steering_y > this.maxforce){
@@ -465,7 +460,7 @@ class Boid
         this.set_idle_state();
     } 
 
-    random_velo(){
+    random_velocity(){
         var rand = Math.floor(Math.random() * 2);
         console.log(rand);
         if(rand == 0){
@@ -490,20 +485,10 @@ class Boid
             //Change animation dependeing on user input (key press)
             if(this.x_v > 0 && this.y_v < 0){
                 this.state = "walk_NE";
-            } else if (this.x_v < 0 && this.y_v < 0){
-                this.state = "walk_NW";
-            } else if (this.x_v < 0 && this.y_v > 0){
-                 this.state = "walk_SW";
-            } else if (this.x_v > 0 && this.y_v > 0){
-                this.state = "walk_SE";
-            } else if(this.x_v > 0 && this.y_v == 0){
+            }else if(this.x_v > 0 && this.y_v == 0){
                 this.state = "walk_E";
             }else if(this.x_v < 0 && this.y_v == 0){
                 this.state = "walk_W";
-            }else if(this.y_v > 0 && this.x_v == 0){
-                this.state = "walk_S";
-            }else if(this.y_v < 0 && this.x_v == 0){
-                this.state = "walk_N";
             }
     
             //put of bounds check
