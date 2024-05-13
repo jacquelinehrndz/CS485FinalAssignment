@@ -5,7 +5,7 @@ function setup()
 {
     createCanvas(640, 360);
     //creating a bunch of boids 
-    for(let i = 0; i < 100; i++)
+    for(let i = 0; i < 3; i++)
         {
             //adding boid to flock array
             flock.push(new Boid());
