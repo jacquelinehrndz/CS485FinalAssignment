@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8"/>
-        <title>BOIDS WITH PENGUINS</title>
+        <title>penguin boids</title>
         <!--PROFS SCRIPT-->
         <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
         <script src="sprite.js"></script>
@@ -30,6 +30,14 @@
                 font-size: 100px;
                 text-align: center;
                 color: lightblue;
+                opacity: 100%;
+            }
+            p
+            {
+                font-family: cute;
+                font-size: 50px;
+                text-align: center;
+                color: lightblue;
                 opacity: 75%;
             }
         </style>
@@ -38,6 +46,7 @@
 
     <body>
         <h1>penguin boids</h1>
+        <p>collect the snowballs!</p>
 
         <canvas id='mycanvas'></canvas>
 
@@ -87,7 +96,7 @@
             //Preload snowball
                 for(var i = 0;i< snowball_states.length;i++){
                             for(var j = 0; j < data["snowball"][snowball_states[i]].length; j++){
-                                //console.log("loading snowball");
+                                console.log("loading snowball");
                                 data["snowball"][snowball_states[i]][j]['img'] = new Image();
                                 data["snowball"][snowball_states[i]][j]['img'].src = 'snowball_imgs/' + snowball_states[i] + '/' + j + '.png';
                             }

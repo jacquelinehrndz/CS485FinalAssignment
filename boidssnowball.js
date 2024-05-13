@@ -1,6 +1,6 @@
 class BoidSnowball{
 	constructor(sprite_json,start_state){
-		console.log("Inside constructor");
+		//console.log("Inside constructor");
         this.sprite_json = sprite_json;
 
         this.root_e = "snowball";
@@ -277,8 +277,9 @@ class BoidSnowball{
 		}
 	}
 
-    bound_hit(side){
-            this.set_idle_state();
+    bound_hit(side)
+    {
+        this.set_idle_state();
     } 
 
 	random_velo() {

@@ -163,9 +163,8 @@ class Sprite
                 this.y <= (others[i].y + others[i].sprite_json[others[i].root_e][others[i].state][others[i].cur_frame]['h']) && 
                 (this.y + this.sprite_json[this.root_e][this.state][this.cur_frame]['h']) >= others[i].y){
                     
-                    if(others[i].constructor.name == "Boid2"){
+                    if(others[i].constructor.name == "BoidSnowball"){
                         others.splice(i, 1);
-                        console.log("yo");
                     }
                    
             }
