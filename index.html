@@ -57,11 +57,12 @@
             var snowball_Img = new Image();
         
             //for player movement
-            const up_arrow = 38;
-            const down_arrow = 40;
-            const left_arrow = 37;
-            const right_arrow = 39;
+            const up = 38;
+            const down = 40;
+            const left = 37;
+            const right = 39;
         
+            //declaring states
             const penguin_states = ["idle","walk_E","walk_W"];
             const snowball_states = ["idle"];
         
@@ -107,9 +108,8 @@
         
             });
         
-            $( document ).ready(function() {
-                
-                console.log( "Page is now ready" );
+            $( document ).ready(function()
+            {
                 resize();
         
                 img.onload = function() {
@@ -119,7 +119,6 @@
                 img.src = 'bkg_Imgs/bk_1.jpg';
         
                 snowball_Img.src = 'snowball.png';
-                //draw_loop_timeout = setInterval(draw_loop, 33);
         
                 setTimeout(() => {
                     requestAnimationFrame(draw_loop);
@@ -143,19 +142,19 @@
                 
                 document.body.onkeydown = function(e){
                     
-                    if(e.keyCode == up_arrow){
+                    if(e.keyCode == up){
                         key_change = true;
                         key_press["UP"] = e.keyCode;
                     } 
-                    if(e.keyCode == right_arrow){
+                    if(e.keyCode == right){
                         key_change = true;
                         key_press["RIGHT"] = e.keyCode;
                     }
-                    if(e.keyCode == left_arrow){
+                    if(e.keyCode == left){
                         key_change = true;
                         key_press["LEFT"] = e.keyCode;
                     }
-                    if(e.keyCode == down_arrow){
+                    if(e.keyCode == down){
                         key_change = true;
                         key_press["DOWN"] = e.keyCode;
                     }
@@ -175,7 +174,7 @@
                     if(key_press["DOWN"] == e.keyCode){
                         key_press["DOWN"] = null;
                     }
-        
+                    //no key press
                     if(key_press["UP"] == null && key_press["RIGHT"] == null && key_press["LEFT"] == null && key_press["DOWN"] == null){
                         key_change = false;
                     }

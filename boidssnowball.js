@@ -1,18 +1,13 @@
 class BoidSnowball{
-	constructor(sprite_json, start_state){
-		//console.log("Inside constructor");
+	constructor(sprite_json, start_state)
+    {
+        //initialization
         this.sprite_json = sprite_json;
-
         this.root_e = "snowball";
-
         this.cur_frame = 0;
-
         this.idle = false;
-
 		this.state = start_state;
-
         this.count = 1;
-
 		// Accleration
 		this.acceleration_X = 0;
 		this.acceleration_Y = 0;
@@ -24,7 +19,7 @@ class BoidSnowball{
 		this.perception = 50;
 		
 		// Alignment
-		this.alignment_Scalar = 0.5;
+		this.alignment_Scalar = 1.0;
 		// Cohesion
 		this.cohesion_Scalar = 1.0;
 		// Separation
@@ -39,6 +34,8 @@ class BoidSnowball{
         this.y_v = this.random_velo();
     }
 	
+    //from boids video
+    //basically if a snowball reaches an edge make it reappear
 	edges(width, height) {
 		if (this.x > width) {
 			this.x = 0;
