@@ -1,3 +1,5 @@
+//Parent sprite class
+//code from lecture
 class Sprite
 {
     constructor(sprite_json, x, y, start_state)
@@ -30,15 +32,15 @@ class Sprite
         this.x_v = 0;
         this.y_v = 0;
 
+        //used for boids
+        //setting velocity
         this.set_v = 5;
-
+        //
         this.idle = false;
-
         this.count = 1;
-
-        this.points = 0;
     }
 
+//Profs code
     draw(state){
         var ctx = canvas.getContext('2d');
  
@@ -77,7 +79,7 @@ class Sprite
 
         if(this.idle == false){
             
-            //Screen border checks
+            //Borders
             if(this.x >= (window.innerWidth - this.sprite_json[this.root_e][this.state][this.cur_frame]['w']) ){//Right
                 if(state['key_press']["RIGHT"] != null){ //These checks allow us to keep moving at the screen border, without leaving the screen.
                     this.x_v = 0;
@@ -129,7 +131,8 @@ class Sprite
         
     }
 
-    bound_hit(side){
+    bound_hit(side)
+    {
             this.set_idle_state();
     } 
 
@@ -153,29 +156,38 @@ class Sprite
             }
     }
 
+    //function used for interaction if collision
     detect_collision(others){
-       for(var i = 0; i < others.length; i++){
-            
-            
-            //Check if collided with any sprites
+    //others in this context is snowballs
+       for(var i = 0; i < others.length; i++)
+        {
+            //if collided with any sprites
             if( this.x <= (others[i].x + others[i].sprite_json[others[i].root_e][others[i].state][others[i].cur_frame]['w']) &&
                 (this.x + this.sprite_json[this.root_e][this.state][this.cur_frame]['w']) >= others[i].x && 
                 this.y <= (others[i].y + others[i].sprite_json[others[i].root_e][others[i].state][others[i].cur_frame]['h']) && 
                 (this.y + this.sprite_json[this.root_e][this.state][this.cur_frame]['h']) >= others[i].y){
                     
+                    //INTERACTION
+                    //delete or "splice" snowballs if collided
                     if(others[i].constructor.name == "BoidSnowball"){
                         others.splice(i, 1);
-                    }
-                   
+                    }  
             }
         }
     }
 
     update_animation(){
-        //Change animation correlated to the direction we're moving
-        if(this.x_v > 0){
+        //Change animation
+        //if move left
+        if(this.x_v > 0)
+            {
+            //change animation to walk_E
             this.state = "walk_E";
-        }else if(this.x_v < 0){
+        }
+        //if move right
+        else if(this.x_v < 0)
+            {
+                //change animation
             this.state = "walk_W";
         }
 

@@ -25,36 +25,41 @@ class Boid
         */
 
         //converting code from YT vid to context of proj
+        //need to create velocities for x and y axis
         this.x_v = this.random_velo();
         this.y_v = this.random_velo();
 
+        //setting accelarations for x and y axis
         this.x_a = 0;
         this.y_a = 0;
 
+        //penguin starts off still
         this.idle = false;
 
+        //only one 
         this.count = 1;
 
         this.x = this.random_pos_x();
         this.y = this.random_pos_y();
 
+        //setting speeds for penguin
         this.maxforce = 0.2;
         this.maxSpeed = 4;
     }
 
-    draw(state){
+    draw(state)
+    {
         var ctx = canvas.getContext('2d');
-        //console.log(state['key_change']);
 
         if( this.cur_bk_data != null){
             ctx.putImageData(this.cur_bk_data , (this.x - this.x_v) , (this.y - this.y_v));
         }
 
+        //image data
         this.cur_bk_data = ctx.getImageData(this.x, this.y, 
             this.sprite_json[this.root_e][this.state][this.cur_frame]['w'], 
             this.sprite_json[this.root_e][this.state][this.cur_frame]['h']);
 
-            
         ctx.drawImage(this.sprite_json[this.root_e][this.state][this.cur_frame]['img'], this.x, this.y );
 
         this.count += 1;
@@ -82,7 +87,7 @@ class Boid
                 this.y = window.innerHeight - this.sprite_json[this.root_e][this.state][this.cur_frame]['h']-1;
             }
             
-            //If we're not idle, then we should be moving!
+            //movement
             this.x += this.x_v;
             this.y += this.y_v;
 
@@ -92,14 +97,14 @@ class Boid
             this.x_a = 0;
             this.y_a = 0;
 
-            //limit x magnitude to a max of maxForce
+            //For X, set  to a magnitude to a max of maxForce
             if(this.x_v < -this.maxforce){
                 this.x_v = -this.maxforce;
             } else if(this.x_v > this.maxforce){
                 this.x_v = this.maxforce;
             }
 
-            //limit y magnitude to a max of maxForce
+            //For X, set  to a magnitude to a max of maxForce
             if(this.y_v < -this.maxforce){
                 this.y_v = -this.maxforce;
             } else if(this.y_v > this.maxforce){
@@ -138,6 +143,7 @@ class Boid
 
     /*
     //make boids reappear if they reach edges
+    //code from vid
     edges()
     {
         if(this.position.x > width)
@@ -168,6 +174,7 @@ class Boid
         let perceptionRadius = 50;
         //avg going to be a vector
         //let steering = createVector();
+        //same idea as video but needed for both axis
         let steering_x = 0;
         let steering_y = 0;
         //total
@@ -177,18 +184,21 @@ class Boid
             {
                 //calculating distance between "this" boid and "other" boid
                 //let d = dist(this.position.x, this.position.y, other.position.x, other.position.y);
-
+                //calculate distance
+                //collecting data from x-axis
                 var a = this.x-other.x;
+                //collecting data from y axis
                 var b = this.y-other.y;
-                var d = Math.sqrt( a*a + b*b );
+                //calc distance
+                var distance = Math.sqrt( a*a + b*b );
 
                 //id d less than 100 add up, and ignore "self"
                 if(other != this && d < perceptionRadius)
                     {
                         //adding up velocities
                         //steering_x.add(other.velocity);
-                        steering_x += other.x_v;
-                        steering_y += other.y_v;
+                        steering_x.add(other.x_v);
+                        steering_y.add(other.y_v);
                         total++;
                     }
             }
@@ -213,12 +223,9 @@ class Boid
                     steering_y = -this.maxSpeed;
                 else if ((steering_y > 0))
                     steering_y = this.maxSpeed;
-    
-    
+       
                 steering_x -= this.x_v
                 steering_y -= this.y_v
-    
-                
     
                 //limit x magnitude to a max of maxForce
                 if(steering_x < -this.maxforce){
@@ -267,11 +274,11 @@ class Boid
                 */
                     var a = this.x-other.x;
                     var b = this.y-other.y;
-                    var d = Math.sqrt( a*a + b*b );
+                    var distance = Math.sqrt( a*a + b*b );
         
                     if(other != this && d < perceptionRadius){
-                        steering_x += other.x;
-                        steering_y += other.y;
+                        steering_x.add(other.x);
+                        steering_y.add(other.y);
                         total++;
                     }
             }
@@ -356,7 +363,7 @@ class Boid
                     */
                     var a = this.x-other.x;
                     var b = this.y-other.y;
-                    var d = Math.sqrt( a*a + b*b );
+                    var distance = Math.sqrt( a*a + b*b );
         
                     if(other != this && d < perceptionRadius){
                         var diff_x = this.x - other.x;
@@ -470,19 +477,17 @@ class Boid
 
     random_pos_x(){
         var rand = Math.floor(Math.random() * (window.innerWidth - this.sprite_json[this.root_e][this.state][this.cur_frame]['w']));
-
         return rand;
     }
 
     random_pos_y(){
         var rand = Math.floor(Math.random() * (window.innerHeight - this.sprite_json[this.root_e][this.state][this.cur_frame]['w']));
-
         return rand;
     }
 
 
         update_animation(){
-            //Change animation correlated to the direction we're moving
+            //Change animation dependeing on user input (key press)
             if(this.x_v > 0 && this.y_v < 0){
                 this.state = "walk_NE";
             } else if (this.x_v < 0 && this.y_v < 0){
@@ -501,7 +506,7 @@ class Boid
                 this.state = "walk_N";
             }
     
-            //Check if our new animation will put us out of bounds, and if so set current frame to 0
+            //put of bounds check
             if(this.cur_frame >= this.sprite_json[this.root_e][this.state].length){
                 this.cur_frame = 0;
             }

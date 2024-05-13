@@ -1,5 +1,5 @@
 class BoidSnowball{
-	constructor(sprite_json,start_state){
+	constructor(sprite_json, start_state){
 		//console.log("Inside constructor");
         this.sprite_json = sprite_json;
 
@@ -282,8 +282,7 @@ class BoidSnowball{
         this.set_idle_state();
     } 
 
-	random_velo() {
-		// console.log("maxSpeed:", this.maxSpeed); 
+	random_velo(){
 		return (Math.random() * 2 * this.maxSpeed) - this.maxSpeed;
 	}
 

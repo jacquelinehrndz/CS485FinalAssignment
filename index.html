@@ -7,14 +7,13 @@
         <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
         <script src="sprite.js"></script>
         
-        <!--BOID SCRIPT
+        <!--BOID SCRIPT from YT VID
         <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/p5.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/addons/p5.dom.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/addons/p5.sound.min.js"></script> 
         -->
+        <!--OUR SCRIPTS-->
         <script src = "boid.js"></script>
-        <!--<script src = "penguin.js"></script> -->
-        <!--<script src = "sketch.js"></script> -->
         <script src = "boidssnowball.js"></script>
 
         <style>
@@ -57,13 +56,12 @@
             var img = new Image();
             var snowball_Img = new Image();
         
+            //for player movement
             const up_arrow = 38;
             const down_arrow = 40;
             const left_arrow = 37;
             const right_arrow = 39;
         
-            //const penguin_states = ["idle","idleBackAndForth","idleBreathing","idleFall","idleLayDown","idleLookAround","idleLookDown","idleLookLeft",
-            //"idleLookRight","idleLookUp","idleSit","idleSpin","idleWave","walk_E","walk_N","walk_NE","walk_NW","walk_S","walk_SE","walk_SW","walk_W"];
             const penguin_states = ["idle","walk_E","walk_W"];
             const snowball_states = ["idle"];
         
@@ -79,12 +77,12 @@
             sprites_to_draw[0] = new Array(0); //background
             sprites_to_draw[1] = new Array(0); //forground, BOIDSSS
         
-        
+            //preload penguin
             $.getJSON( "penguin_Imgs/animationData.json", function( data ) {
                     //Preload Penguin
                         for(var i = 0;i< penguin_states.length;i++){
-                            for(var j = 0; j < data["penguin"][penguin_states[i]].length; j++){
-                                console.log("loading");
+                            for(var j = 0; j < data["penguin"][penguin_states[i]].length; j++)
+                            {
                                 data["penguin"][penguin_states[i]][j]['img'] = new Image();
                                 data["penguin"][penguin_states[i]][j]['img'].src = 'penguin_Imgs/' + penguin_states[i] + '/' + j + '.png';
                             }
@@ -95,13 +93,13 @@
             $.getJSON( "snowball_imgs/animationData.json", function( data ) {
             //Preload snowball
                 for(var i = 0;i< snowball_states.length;i++){
-                            for(var j = 0; j < data["snowball"][snowball_states[i]].length; j++){
-                                console.log("loading snowball");
+                            for(var j = 0; j < data["snowball"][snowball_states[i]].length; j++)
+                            {
                                 data["snowball"][snowball_states[i]][j]['img'] = new Image();
                                 data["snowball"][snowball_states[i]][j]['img'].src = 'snowball_imgs/' + snowball_states[i] + '/' + j + '.png';
                             }
                 }
-        
+                //using 100 snowballs
                 for(var i = 0; i < 100;i++){
                     sprites_to_draw[1].push( new BoidSnowball(data, "idle") );
                 }
@@ -209,7 +207,6 @@
                     );
                     }
                 }
-                
                 requestAnimationFrame(draw_loop);
             }
         
